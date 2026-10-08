@@ -22,6 +22,13 @@ export function WaterSpeech({ children }: { children?: ReactNode }) {
     return () => clearInterval(id);
   }, [speaking, waiting, tick]);
 
+  // "다음"을 누르지 않아도 읽을 시간만큼 기다렸다가 저절로 넘깁니다 (글자당 60ms, 2.5~7초)
+  useEffect(() => {
+    if (!waiting) return;
+    const id = setTimeout(next, Math.min(Math.max(shown.length * 60, 2500), 7000));
+    return () => clearTimeout(id);
+  }, [waiting, next, shown.length]);
+
   useEffect(() => {
     ref.current?.scrollTo({ top: ref.current.scrollHeight });
   }, [shown, speaking]);

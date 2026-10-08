@@ -2,19 +2,30 @@ import { google } from "@ai-sdk/google";
 import { streamText } from "ai";
 import { profileAsContext } from "@/entities/profile";
 
-// IP별 일일 호출 제한 (무료 티어 보호용)
-const DAILY_LIMIT = 20;
-const hits = new Map<string, { day: string; count: number }>();
+// 호출 제한 (무료 티어 보호용)
+// ponytail: 서버 인스턴스 메모리 기준이라 인스턴스가 여러 개거나 재시작되면 초기화됨. 남용이 실제로 보이면 Upstash Redis 등으로 옮길 것
+const DAILY_LIMIT = 20; // IP당 하루
+const MIN_INTERVAL_MS = 4000; // IP당 연속 호출 간격
+const GLOBAL_DAILY_LIMIT = 400; // 서버 전체 하루
+const hits = new Map<string, { day: string; count: number; last: number }>();
+let global = { day: "", count: 0 };
 
 function allow(ip: string) {
   const day = new Date().toISOString().slice(0, 10);
+  const now = Date.now();
+  if (global.day !== day) global = { day, count: 0 };
+  if (global.count >= GLOBAL_DAILY_LIMIT) return false;
+
   const rec = hits.get(ip);
-  if (!rec || rec.day !== day) {
-    hits.set(ip, { day, count: 1 });
-    return true;
+  if (rec && rec.day === day) {
+    if (rec.count >= DAILY_LIMIT || now - rec.last < MIN_INTERVAL_MS) return false;
+    rec.count += 1;
+    rec.last = now;
+  } else {
+    if (hits.size > 5000) hits.clear(); // 메모리가 끝없이 늘지 않게
+    hits.set(ip, { day, count: 1, last: now });
   }
-  if (rec.count >= DAILY_LIMIT) return false;
-  rec.count += 1;
+  global.count += 1;
   return true;
 }
 

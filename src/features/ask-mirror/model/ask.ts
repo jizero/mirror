@@ -1,24 +1,27 @@
 import { create } from "zustand";
 import { lines, selectSpeaking, useSpeech } from "@/entities/mirror";
-import { answerFor, matchTopic, profile, topics } from "@/entities/profile";
+import { answerFor, guessTopic, matchTopic, profile, topics } from "@/entities/profile";
 import { useVisitor } from "@/entities/visitor";
 import { streamAnswer } from "../api/streamAnswer";
 
-/** 한 번 방문에 Gemini를 부를 수 있는 최대 횟수 */
-export const AI_LIMIT_PER_VISIT = 5;
+/** 연달아 물을 때 다음 질문까지 기다리는 시간 */
+export const ASK_COOLDOWN_MS = 3000;
 
-export const useAiQuota = create<{ used: number }>()(() => ({ used: 0 }));
+/** 이 시각 전까지는 묻기 버튼이 잠깁니다 */
+export const useAskCooldown = create<{ until: number }>()(() => ({ until: 0 }));
 
 /**
  * 질문 처리 순서
  * 1) 주제 버튼 또는 키워드 일치 → 준비된 답 (API 미사용)
- * 2) 없으면 Gemini (방문당 5회 제한)
- * 3) 실패/한도 초과 → 고정 안내 문구
+ * 2) 없으면 Gemini (서버에서 IP당 하루 20회, 4초 간격 제한)
+ * 3) 실패/한도 초과 → 있는 데이터에서 가장 가까운 주제로 짐작해 답함
  */
 export function askMirror(question: string, opts: { topicId?: string; prefix?: string } = {}) {
   const visitor = useVisitor.getState().visitor;
   const speech = useSpeech.getState();
-  if (!visitor || selectSpeaking(speech)) return;
+  // 답하는 중이거나 방금 물었다면 무시 (연달아 묻기 방지)
+  if (!visitor || selectSpeaking(speech) || Date.now() < useAskCooldown.getState().until) return;
+  useAskCooldown.setState({ until: Date.now() + ASK_COOLDOWN_MS });
 
   const prefix = opts.prefix ? `${opts.prefix}\n` : "";
   speech.setAsked(question);
@@ -29,18 +32,15 @@ export function askMirror(question: string, opts: { topicId?: string; prefix?: s
 
 async function askAI(question: string, name: string, prefix: string) {
   const speech = useSpeech.getState();
-  const unknown = prefix + lines.unknown(name, profile.contact.email);
-  const { used } = useAiQuota.getState();
-  if (used >= AI_LIMIT_PER_VISIT) return speech.say(unknown);
-
-  useAiQuota.setState({ used: used + 1 });
+  const topic = guessTopic(question);
+  const guess = prefix + lines.guessHead(name) + answerFor(topic, name) + lines.guessTail(profile.contact.email);
   speech.setStreaming(true);
   speech.say(prefix);
   try {
     const text = await streamAnswer(question, name, (acc) => speech.setTarget(prefix + acc));
-    if (!text.trim()) speech.say(unknown);
+    if (!text.trim()) speech.say(guess, topic.image);
   } catch {
-    speech.say(unknown);
+    speech.say(guess, topic.image);
   } finally {
     speech.setStreaming(false);
   }
