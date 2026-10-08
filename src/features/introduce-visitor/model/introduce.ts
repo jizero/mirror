@@ -8,14 +8,14 @@ export function introduce(text: string, presetTypeId?: string): Visitor {
   return v;
 }
 
-/** "그대는 누구인가?" 팝업 — 먼저 입력한 질문을 들고 있다가 소개가 끝나면 돌려줍니다 */
-type DialogState = {
+/** "그대는 누구인가?" — 먼저 입력한 질문을 들고 있다가 고르고 나면 돌려줍니다 */
+type IntroduceState = {
   pending: string | null;
   open: (question: string) => void;
   close: () => void;
 };
 
-export const useIntroduceDialog = create<DialogState>()((set) => ({
+export const useIntroduce = create<IntroduceState>()((set) => ({
   pending: null,
   open: (pending) => set({ pending }),
   close: () => set({ pending: null }),

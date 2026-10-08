@@ -1,2 +1,2 @@
-export { IntroduceDialog } from "./ui/IntroduceDialog";
-export { useIntroduceDialog } from "./model/introduce";
+export { IntroduceChoices } from "./ui/IntroduceChoices";
+export { useIntroduce } from "./model/introduce";

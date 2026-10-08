@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
+import { useSpeech } from "@/entities/mirror";
 import { tokens } from "@/shared/ui";
 import { MAX_RIPPLES, SPEECH_CENTER_Y } from "../config";
 import { waterFragment, waterVertex } from "../lib/waterShader";
@@ -9,6 +10,7 @@ import { waterFragment, waterVertex } from "../lib/waterShader";
 /**
  * 화면 전체를 채우는 Three.js 물.
  * 누르면 그 자리에서 물결이 퍼지고, 누른 채 끌면 물결이 따라옵니다.
+ * 거울이 글자를 쓸 때와 방문자가 자판을 칠 때도 물방울이 떨어집니다.
  */
 export default function WaterScene({ speaking }: { speaking: boolean }) {
   const mountRef = useRef<HTMLDivElement>(null);
@@ -61,14 +63,36 @@ export default function WaterScene({ speaking }: { speaking: boolean }) {
     let next = 0;
     let lastDrop = 0;
     let pressed = false;
-    const drop = (e: PointerEvent) => {
+    const dropAt = (clientX: number, clientY: number) => {
       const r = canvas.getBoundingClientRect();
-      const x = ((e.clientX - r.left) / r.width) * uniforms.uAspect.value;
-      const y = 1 - (e.clientY - r.top) / r.height;
+      const x = ((clientX - r.left) / r.width) * uniforms.uAspect.value;
+      const y = 1 - (clientY - r.top) / r.height;
       uniforms.uRipples.value[next].set(x, y, clock.elapsedTime);
       next = (next + 1) % MAX_RIPPLES;
       lastDrop = clock.elapsedTime;
     };
+    const drop = (e: PointerEvent) => dropAt(e.clientX, e.clientY);
+    // 글자마다 떨어뜨리면 물결이 너무 빽빽해서 간격을 둡니다
+    let lastType = 0;
+    const typeDrop = (cx: number, cy: number, spreadX: number, spreadY: number) => {
+      if (clock.elapsedTime - lastType < 0.11) return;
+      lastType = clock.elapsedTime;
+      dropAt(cx + (Math.random() - 0.5) * spreadX, cy + (Math.random() - 0.5) * spreadY);
+    };
+    // 거울이 글자를 쓸 때: 글 둘레에
+    const unsubSpeech = useSpeech.subscribe((st, prev) => {
+      if (st.shown.length <= prev.shown.length || !st.shown.trim()) return;
+      const r = canvas.getBoundingClientRect();
+      typeDrop(r.left + r.width / 2, r.top + r.height * SPEECH_CENTER_Y, Math.min(r.width, 620) * 0.8, r.height * 0.18);
+    });
+    // 방문자가 입력창에 칠 때: 입력창 둘레에 (한글 조합 중에도 오도록 keydown 대신 input)
+    const onKey = (e: Event) => {
+      const el = e.target as HTMLElement;
+      if (!el.matches?.("input, textarea")) return;
+      const r = el.getBoundingClientRect();
+      typeDrop(r.left + r.width / 2, r.top + r.height / 2, r.width, r.height * 2);
+    };
+    window.addEventListener("input", onKey);
     const onDown = (e: PointerEvent) => {
       pressed = true;
       drop(e);
@@ -109,6 +133,8 @@ export default function WaterScene({ speaking }: { speaking: boolean }) {
     return () => {
       cancelAnimationFrame(raf);
       ro.disconnect();
+      unsubSpeech();
+      window.removeEventListener("input", onKey);
       canvas.removeEventListener("pointerdown", onDown);
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("pointerup", onUp);

@@ -1,10 +1,10 @@
 .stage { position: fixed; inset: 0; overflow: hidden; }
 
-/* 화면 아래 가운데 입력창 */
+/* 화면 아래쪽 가운데 입력창 (바닥에서 조금 띄움) */
 .dock {
   position: absolute;
   left: 50%;
-  bottom: max(var(--space-6), env(safe-area-inset-bottom));
+  bottom: max(12vh, calc(env(safe-area-inset-bottom) + var(--space-5)));
   transform: translateX(-50%);
   width: min(560px, calc(100% - 32px));
 }
