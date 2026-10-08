@@ -1,0 +1,40 @@
+.button {
+  font: inherit;
+  font-family: var(--font-hand);
+  color: var(--color-ink);
+  background: none;
+  border: 0;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color var(--duration-fast) var(--ease-out), transform var(--duration-fast) var(--ease-out);
+}
+.button:disabled { opacity: 0.35; cursor: default; }
+
+/* 물결 밑줄이 그어진 선택지 */
+.wavy {
+  font-size: var(--text-md);
+  padding: 2px 2px 6px;
+  background-image: var(--wavy-underline);
+  background-repeat: repeat-x;
+  background-position: 0 100%;
+  background-size: 20px 5px;
+}
+.wavy:nth-child(odd) { transform: rotate(calc(var(--tilt-sm) * -1)); }
+.wavy:nth-child(even) { transform: rotate(calc(var(--tilt-sm) * 0.8)); }
+.wavy:hover:not(:disabled) { color: var(--color-accent); transform: translateY(-1px); }
+
+/* 붉은 잉크 글씨 버튼 (제출 등) */
+.accent {
+  font-size: var(--text-md);
+  color: var(--color-accent);
+  padding: var(--space-1) 2px;
+}
+.accent:hover:not(:disabled) { text-decoration: underline wavy; text-underline-offset: 4px; }
+
+/* 눈에 덜 띄는 보조 버튼 */
+.quiet {
+  font-size: var(--text-sm);
+  color: var(--color-ink-soft);
+  padding: var(--space-1) var(--space-3);
+}
+.quiet:hover:not(:disabled) { color: var(--color-ink); }

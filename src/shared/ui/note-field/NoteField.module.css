@@ -1,0 +1,23 @@
+/* 공책 줄 위에 적는 입력칸 */
+.field {
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+  gap: var(--space-3);
+  padding: var(--space-1) 2px;
+  border-bottom: var(--line-width) solid var(--color-ink);
+  border-radius: 0 0 2px 40px / 0 0 2px 4px; /* 살짝 삐뚤어진 선 */
+}
+.input {
+  flex: 1;
+  min-width: 0;
+  font: inherit;
+  font-family: var(--font-hand);
+  font-size: 22px;
+  color: var(--color-ink);
+  background: transparent;
+  border: 0;
+  outline: 0;
+  padding: var(--space-1) 2px;
+}
+.input::placeholder { color: var(--color-ink-faint); }

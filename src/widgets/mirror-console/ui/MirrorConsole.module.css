@@ -1,0 +1,24 @@
+.console {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+}
+.asked {
+  font-size: 19px;
+  color: var(--color-ink-soft);
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.asked::before { content: "— "; }
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-1) var(--space-4);
+}
+.alignStart { align-items: flex-start; }
+.alignStart .chips { justify-content: flex-start; }

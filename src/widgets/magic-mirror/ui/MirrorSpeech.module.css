@@ -1,0 +1,42 @@
+/* 거울 유리 위에 떠오르는 글 */
+.speech {
+  position: absolute;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  pointer-events: none;
+  text-align: center;
+  scrollbar-width: none;
+  mask-image: linear-gradient(transparent, #000 12%, #000 88%, transparent);
+  transition: opacity var(--duration-fast) linear;
+}
+.speech::-webkit-scrollbar { display: none; }
+
+.text {
+  margin: auto 0;
+  padding: 1em 0;
+  white-space: pre-line;
+  word-break: keep-all;
+  font-family: var(--font-hand);
+  font-size: var(--text-glass);
+  line-height: var(--leading-normal);
+  color: var(--color-on-glass);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+}
+
+.caret {
+  display: inline-block;
+  width: 2px;
+  height: 0.9em;
+  margin-left: 3px;
+  background: var(--color-on-glass);
+  vertical-align: -0.1em;
+  animation: blink 1s steps(1) infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .caret { animation: none; }
+}
