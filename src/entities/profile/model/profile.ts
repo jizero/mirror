@@ -202,6 +202,14 @@ export const topics: Topic[] = [
     image: "/Jimsy.webp",
   },
   {
+    id: "oliveyoung",
+    label: "올리브영",
+    question: "올리브영에서는 무엇을 하고 싶어?",
+    keywords: ["올리브영", "올영", "oliveyoung", "olive young"],
+    answer:
+      "올리브영이라… 그는 그곳의 일하는 사람들을 위한 화면을 꿈꾸고 있느니라.\n매장과 파트너, 내부 구성원이 복잡한 업무를\n쉽고 안정적으로 처리하는 운영 환경을 만들고 싶다 하더구나.\n글로벌 이커머스와 게임 플랫폼에서 백오피스와 업무 도구를 만들며\n운영자가 더 편히 일하는 화면을 빚어 왔고,\nReact·TypeScript UI부터 데이터 시각화, 시스템 연동,\n공통 컴포넌트와 개발 자동화까지 팀의 효율을 함께 끌어올렸지.",
+  },
+  {
     id: "contact",
     label: "연락처",
     question: "어떻게 연락할 수 있어?",

@@ -2,7 +2,7 @@
 .mirror {
   position: absolute;
   left: 50%;
-  height: min(40vh, 380px);
+  height: min(40vh, 380px, 64vw); /* 좁은 화면에서는 가로 폭에 맞춰 작아짐 */
   aspect-ratio: 0.74;
   transform: translate(-50%, -50%);
   border-radius: 50%;
@@ -91,4 +91,14 @@
 
 @media (prefers-reduced-motion: reduce) {
   .smoke::before, .smoke::after, .mist::before, .mist::after { animation: none; }
+}
+
+/* 세로가 낮은 화면: 거울을 줄이고 위로 올림 (위치는 인라인 스타일이라 !important) */
+@media (max-height: 500px) {
+  .mirror {
+    height: 34vh;
+    top: 22% !important;
+    padding: 6px;
+  }
+  .smoke, .mask, .mist { inset: 6px; }
 }

@@ -5,3 +5,4 @@ next-env.d.ts
 .vercel
 *.tsbuildinfo
 황지영_*.md
+채용*.md

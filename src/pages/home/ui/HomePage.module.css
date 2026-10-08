@@ -8,3 +8,11 @@
   transform: translateX(-50%);
   width: min(560px, calc(100% - 32px));
 }
+
+/* 휴대폰 가로 모드처럼 세로가 낮은 화면: 입력창을 바닥에 붙이고 글씨를 줄임 */
+@media (max-height: 500px) {
+  .dock {
+    bottom: max(10px, env(safe-area-inset-bottom));
+    --text-md: 15px;
+  }
+}
