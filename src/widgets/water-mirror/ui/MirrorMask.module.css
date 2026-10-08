@@ -93,11 +93,12 @@
   .smoke::before, .smoke::after, .mist::before, .mist::after { animation: none; }
 }
 
-/* 세로가 낮은 화면: 거울을 줄이고 위로 올림 (위치는 인라인 스타일이라 !important) */
-@media (max-height: 500px) {
+/* 세로가 낮은 가로 화면: 거울을 왼쪽에 세우고 글은 오른쪽에 (위치는 인라인 스타일이라 !important) */
+@media (max-height: 500px) and (orientation: landscape) {
   .mirror {
-    height: 34vh;
-    top: 22% !important;
+    left: 27%;
+    top: 42% !important;
+    height: 64vh;
     padding: 6px;
   }
   .smoke, .mask, .mist { inset: 6px; }

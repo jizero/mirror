@@ -27,7 +27,7 @@ export function WaterSpeech({ children }: { children?: ReactNode }) {
   }, [shown, speaking]);
 
   return (
-    <div ref={ref} className={s.speech} style={{ top: `${SPEECH_CENTER_Y * 100}%` }} aria-live="polite">
+    <div ref={ref} className={s.speech} style={{ top: `${SPEECH_CENTER_Y * 100}%` }} aria-live="polite" data-speech>
       <p className={s.text}>
         {shown}
         {speaking && !waiting && <span className={s.caret} />}

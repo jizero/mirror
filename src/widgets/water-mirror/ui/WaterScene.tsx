@@ -47,12 +47,26 @@ export default function WaterScene({ speaking }: { speaking: boolean }) {
       ),
     );
 
+    // 글이 떠 있는 자리 (가로 모드에서는 거울 옆으로 옮겨가므로 실제 위치를 잽니다)
+    const speechCenter = () => {
+      const r = canvas.getBoundingClientRect();
+      const e = document.querySelector("[data-speech]")?.getBoundingClientRect();
+      return e
+        ? { x: e.left + e.width / 2, y: e.top + e.height / 2, w: e.width, h: e.height }
+        : { x: r.left + r.width / 2, y: r.top + r.height * SPEECH_CENTER_Y, w: Math.min(r.width, 620), h: r.height * 0.18 };
+    };
+    const syncCenter = () => {
+      const r = canvas.getBoundingClientRect();
+      const c = speechCenter();
+      uniforms.uCenter.value.set(((c.x - r.left) / r.width) * uniforms.uAspect.value, 1 - (c.y - r.top) / r.height);
+    };
+
     const resize = () => {
       const width = mount.clientWidth;
       const height = mount.clientHeight;
       renderer.setSize(width, height);
       uniforms.uAspect.value = width / height;
-      uniforms.uCenter.value.set(0.5 * (width / height), 1 - SPEECH_CENTER_Y);
+      syncCenter();
     };
     resize();
     const ro = new ResizeObserver(resize);
@@ -82,8 +96,9 @@ export default function WaterScene({ speaking }: { speaking: boolean }) {
     // 거울이 글자를 쓸 때: 글 둘레에
     const unsubSpeech = useSpeech.subscribe((st, prev) => {
       if (st.shown.length <= prev.shown.length || !st.shown.trim()) return;
-      const r = canvas.getBoundingClientRect();
-      typeDrop(r.left + r.width / 2, r.top + r.height * SPEECH_CENTER_Y, Math.min(r.width, 620) * 0.8, r.height * 0.18);
+      syncCenter();
+      const c = speechCenter();
+      typeDrop(c.x, c.y, c.w * 0.8, Math.max(c.h, 40));
     });
     // 방문자가 입력창에 칠 때: 입력창 둘레에 (한글 조합 중에도 오도록 keydown 대신 input)
     const onKey = (e: Event) => {

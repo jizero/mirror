@@ -57,11 +57,13 @@
   .text, .caret, .image { animation: none; }
 }
 
-/* 세로가 낮은 화면: 글을 거울과 입력창 사이에 맞춤 */
-@media (max-height: 500px) {
+/* 세로가 낮은 가로 화면: 글은 거울 오른쪽에, 3줄 이상 넉넉히 */
+@media (max-height: 500px) and (orientation: landscape) {
   .speech {
-    top: 56% !important;
-    max-height: 32vh;
+    left: 66%;
+    top: 42% !important;
+    width: min(48vw, 520px);
+    max-height: 62vh;
   }
-  .text { font-size: clamp(14px, 4.4vh + 2px, 22px); }
+  .text { font-size: clamp(16px, 5.4vh + 2px, 26px); }
 }
