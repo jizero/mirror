@@ -1,10 +1,12 @@
 "use client";
 
-import { Button, HandTitle, NoteField, tokens } from "@/shared/ui";
+import { useState } from "react";
+import { Button, Dialog, HandTitle, NoteField, tokens } from "@/shared/ui";
 import s from "./DesignSystemPage.module.css";
 
 /** /design-system — 토큰과 공용 컴포넌트를 한눈에 보는 페이지 */
 export function DesignSystemPage() {
+  const [open, setOpen] = useState(false);
   return (
     <main className={s.page}>
       <HandTitle sub="거울아 거울아 · 디자인 시스템">Design System</HandTitle>
@@ -30,7 +32,7 @@ export function DesignSystemPage() {
             <span className={s.code}>{v}</span>
           </div>
         ))}
-        <div className={s.glass}>유리 위 글씨 (--text-glass, --color-on-glass)</div>
+        <div className={s.glass}>물 위에 떠오르는 글</div>
       </section>
 
       <section className={s.section}>
@@ -46,15 +48,15 @@ export function DesignSystemPage() {
       <section className={s.section}>
         <h2 className={s.h2}>Button</h2>
         <div className={s.row}>
-          <Button variant="wavy">경력</Button>
-          <Button variant="wavy">기술</Button>
-          <Button variant="wavy" disabled>
+          <Button variant="chip">경력</Button>
+          <Button variant="chip">기술</Button>
+          <Button variant="chip" disabled>
             비활성
           </Button>
-          <Button variant="accent">묻기 →</Button>
+          <Button variant="primary">묻기</Button>
           <Button variant="quiet">처음부터 다시</Button>
         </div>
-        <span className={s.code}>{'<Button variant="wavy" | "accent" | "quiet" />'}</span>
+        <span className={s.code}>{'<Button variant="chip" | "primary" | "quiet" />'}</span>
       </section>
 
       <section className={s.section}>
@@ -62,6 +64,16 @@ export function DesignSystemPage() {
         <div className={s.demo}>
           <NoteField label="예시" placeholder="거울에게 무엇이든 물어보세요" submitLabel="묻기" onSubmit={() => {}} />
         </div>
+      </section>
+
+      <section className={s.section}>
+        <h2 className={s.h2}>Dialog</h2>
+        <div className={s.row}>
+          <Button onClick={() => setOpen(true)}>팝업 열기</Button>
+        </div>
+        <Dialog open={open} onClose={() => setOpen(false)} title="잠깐, 그대는 누구인가?" description="설명 문구">
+          <NoteField label="예시" placeholder="이름을 알려주세요" submitLabel="알려주기" onSubmit={() => setOpen(false)} />
+        </Dialog>
       </section>
 
       <section className={s.section}>

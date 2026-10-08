@@ -1,23 +1,26 @@
 "use client";
 
-import { useSpeech } from "@/entities/mirror";
 import { useVisitor } from "@/entities/visitor";
-import { AskPanel } from "@/features/ask-mirror";
-import { IntroducePanel } from "@/features/introduce-visitor";
-import { RestartButton } from "@/features/restart-conversation";
-import { cx } from "@/shared/lib";
+import { AskField, askMirror } from "@/features/ask-mirror";
+import { IntroduceDialog, useIntroduceDialog } from "@/features/introduce-visitor";
 import s from "./MirrorConsole.module.css";
 
-/** 대화 단계에 따라 "누구인가" → "무엇이 궁금한가" 입력을 보여줍니다 */
-export function MirrorConsole({ align = "center" }: { align?: "center" | "start" }) {
-  const visitor = useVisitor((st) => st.visitor);
-  const asked = useSpeech((st) => st.asked);
+/**
+ * 입력창 하나.
+ * 처음 물으면 "그대는 누구인가?" 팝업 → 소개가 끝나면 인사와 함께 그 질문에 답합니다.
+ */
+export function MirrorConsole() {
+  const openIntroduce = useIntroduceDialog((st) => st.open);
+
+  const onAsk = (question: string) => {
+    if (useVisitor.getState().visitor) askMirror(question);
+    else openIntroduce(question);
+  };
 
   return (
-    <section className={cx(s.console, align === "start" && s.alignStart)}>
-      {asked && <p className={s.asked}>{asked}</p>}
-      {visitor ? <AskPanel chipsClassName={s.chips} /> : <IntroducePanel chipsClassName={s.chips} />}
-      {visitor && <RestartButton />}
+    <section className={s.console}>
+      <AskField onAsk={onAsk} />
+      <IntroduceDialog onIntroduced={(v, q) => askMirror(q, { prefix: v.greeting })} />
     </section>
   );
 }

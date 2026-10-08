@@ -1,42 +1,42 @@
-/* 거울 유리 위에 떠오르는 글 */
+/* 물 위에 떠오르는 글 */
 .speech {
   position: absolute;
-  transform: translateX(-50%);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(620px, calc(100% - 48px));
+  max-height: 56vh;
   display: flex;
-  align-items: center;
-  justify-content: center;
   overflow-y: auto;
   pointer-events: none;
   text-align: center;
   scrollbar-width: none;
-  mask-image: linear-gradient(transparent, #000 12%, #000 88%, transparent);
-  transition: opacity var(--duration-fast) linear;
 }
 .speech::-webkit-scrollbar { display: none; }
 
 .text {
-  margin: auto 0;
-  padding: 1em 0;
+  margin: auto;
   white-space: pre-line;
   word-break: keep-all;
   font-family: var(--font-hand);
-  font-size: var(--text-glass);
+  font-size: clamp(22px, 3.4vw, 34px);
   line-height: var(--leading-normal);
-  color: var(--color-on-glass);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+  color: var(--color-ink);
+  text-shadow: 0 0 12px var(--color-surface), 0 0 2px var(--color-surface);
+  animation: float 6s ease-in-out infinite;
 }
+@keyframes float { 50% { transform: translateY(-4px); } }
 
 .caret {
   display: inline-block;
   width: 2px;
   height: 0.9em;
   margin-left: 3px;
-  background: var(--color-on-glass);
+  background: var(--color-accent);
   vertical-align: -0.1em;
   animation: blink 1s steps(1) infinite;
 }
 @keyframes blink { 50% { opacity: 0; } }
 
 @media (prefers-reduced-motion: reduce) {
-  .caret { animation: none; }
+  .text, .caret { animation: none; }
 }

@@ -6,14 +6,7 @@
 html, body { height: 100%; }
 
 body {
-  background-color: var(--color-paper);
-  /* 종이 결 + 가장자리가 살짝 바랜 느낌 */
-  /* 노을진 라일락 하늘 → 분홍빛 종이 */
-  background-image:
-    var(--paper-grain),
-    radial-gradient(ellipse at 36% 45%, rgba(255, 255, 255, 0.55) 0%, transparent 45%),
-    linear-gradient(170deg, var(--color-dusk) 0%, #e9cfe2 38%, var(--color-paper) 75%);
-  background-attachment: fixed;
+  background-color: var(--color-bg);
   color: var(--color-ink);
   font-family: var(--font-hand);
 }

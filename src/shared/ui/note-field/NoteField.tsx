@@ -10,11 +10,12 @@ type Props = {
   label: string;
   maxLength?: number;
   disabled?: boolean;
+  autoFocus?: boolean;
   onSubmit: (value: string) => void;
 };
 
 /** 한 줄 입력 + 제출. 제출하면 비워집니다. */
-export function NoteField({ placeholder, submitLabel, label, maxLength = 300, disabled, onSubmit }: Props) {
+export function NoteField({ placeholder, submitLabel, label, maxLength = 300, disabled, autoFocus, onSubmit }: Props) {
   const [value, setValue] = useState("");
 
   const submit = (e: FormEvent) => {
@@ -34,9 +35,10 @@ export function NoteField({ placeholder, submitLabel, label, maxLength = 300, di
         placeholder={placeholder}
         maxLength={maxLength}
         aria-label={label}
+        autoFocus={autoFocus}
       />
-      <Button type="submit" variant="accent" disabled={disabled || !value.trim()}>
-        {submitLabel} →
+      <Button type="submit" variant="primary" disabled={disabled || !value.trim()}>
+        {submitLabel}
       </Button>
     </form>
   );

@@ -4,7 +4,7 @@
   font-size: var(--text-lg);
   line-height: var(--leading-tight);
   color: var(--color-ink);
-  transform: rotate(calc(var(--tilt-md) * -1));
+  transform: rotate(calc(var(--tilt-sm) * -1));
   transform-origin: left center;
 }
 .sub {

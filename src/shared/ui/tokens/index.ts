@@ -2,21 +2,15 @@
  * TS에서 쓰는 토큰 (three.js 재질 등). 값은 tokens.css와 같게 유지하세요.
  */
 export const color = {
-  paper: "#f6ecef",
-  ink: "#4a2c4f",
-  accent: "#c2557a",
-  onGlass: "#fff6fb",
-  brass: "#b58e55",
-  brassDark: "#6e5532",
-  brassBack: "#5a4329",
-  gilt: "#c99a4b",
-  garnet: "#e0628f",
-  garnetGlow: "#7a1a44",
-  ribbon: "#e98aa8",
-  pearl: "#f2ebdd",
-  velvet: "#4a2350",
-  velvetSheen: "#d9a0d0",
-  warmLight: "#fff0d0",
+  bg: "#d4cbf7",
+  ink: "#3b2d6b",
+  accent: "#ff6fa8",
+  /** 화면 전체의 물 (three.js 셰이더) */
+  water: {
+    base: "#d4cbf7", // 라벤더
+    deep: "#b9acef", // 물결 골
+    light: "#bfe8fb", // 하늘색 물빛
+  },
 } as const;
 
 export const motion = {
@@ -27,21 +21,18 @@ export const motion = {
 
 /** 디자인 시스템 페이지에서 보여줄 CSS 토큰 목록 */
 export const colorTokens = [
-  ["--color-paper", "종이"],
-  ["--color-dusk", "노을 하늘"],
-  ["--color-paper-shade", "종이 그늘"],
+  ["--color-bg", "라벤더 물"],
+  ["--color-surface", "바탕"],
+  ["--color-line", "선"],
   ["--color-ink", "잉크"],
   ["--color-ink-soft", "흐린 잉크"],
-  ["--color-accent", "로즈"],
-  ["--color-star", "금색 별"],
-  ["--color-on-glass", "유리 위 글씨"],
-  ["--color-brass", "황동"],
-  ["--color-brass-dark", "어두운 황동"],
-  ["--color-gilt", "금박"],
-  ["--color-garnet", "로즈 보석"],
-  ["--color-ribbon", "리본"],
-  ["--color-pearl", "진주"],
-  ["--color-velvet", "벨벳"],
+  ["--color-accent", "버블검 핑크"],
+  ["--color-accent-soft", "연한 핑크"],
+  ["--color-mint", "민트"],
+  ["--color-sky-blue", "하늘색"],
+  ["--color-star", "레몬 별"],
+  ["--color-water-deep", "물결 골"],
+  ["--color-water-light", "하늘색 물빛"],
 ] as const;
 
 export const textTokens = ["--text-xs", "--text-sm", "--text-md", "--text-lg", "--text-xl"] as const;

@@ -1,1 +1,2 @@
-export { IntroducePanel } from "./ui/IntroducePanel";
+export { IntroduceDialog } from "./ui/IntroduceDialog";
+export { useIntroduceDialog } from "./model/introduce";

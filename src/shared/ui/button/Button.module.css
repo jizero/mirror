@@ -2,39 +2,54 @@
   font: inherit;
   font-family: var(--font-hand);
   color: var(--color-ink);
-  background: none;
-  border: 0;
   cursor: pointer;
   white-space: nowrap;
-  transition: color var(--duration-fast) var(--ease-out), transform var(--duration-fast) var(--ease-out);
+  transition: background var(--duration-fast) var(--ease-out), transform var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
 }
-.button:disabled { opacity: 0.35; cursor: default; }
+.button:disabled { opacity: 0.45; cursor: default; }
+.button:focus-visible { outline: 3px solid var(--color-accent); outline-offset: 2px; }
 
-/* 물결 밑줄이 그어진 선택지 */
-.wavy {
-  font-size: var(--text-md);
-  padding: 2px 2px 6px;
-  background-image: var(--wavy-underline);
-  background-repeat: repeat-x;
-  background-position: 0 100%;
-  background-size: 20px 5px;
+/* 선택지 알약 버튼 */
+.chip {
+  font-size: var(--text-sm);
+  padding: 6px 16px;
+  background: var(--color-surface);
+  border: var(--line-width) solid var(--color-line);
+  border-radius: var(--radius-pill);
 }
-.wavy:nth-child(odd) { transform: rotate(calc(var(--tilt-sm) * -1)); }
-.wavy:nth-child(even) { transform: rotate(calc(var(--tilt-sm) * 0.8)); }
-.wavy:hover:not(:disabled) { color: var(--color-accent); transform: translateY(-1px); }
+.chip:hover:not(:disabled) {
+  background: var(--color-accent-soft);
+  transform: translateY(-2px);
+  box-shadow: 2px 2px 0 var(--color-line);
+}
 
-/* 붉은 잉크 글씨 버튼 (제출 등) */
-.accent {
+/* 꽉 찬 주요 버튼 (제출) */
+.primary {
   font-size: var(--text-md);
-  color: var(--color-accent);
-  padding: var(--space-1) 2px;
+  color: #fff;
+  padding: 8px 20px;
+  background: var(--color-accent);
+  border: var(--line-width) solid var(--color-line);
+  border-radius: var(--radius-pill);
+  box-shadow: 2px 2px 0 var(--color-line);
 }
-.accent:hover:not(:disabled) { text-decoration: underline wavy; text-underline-offset: 4px; }
+.primary:hover:not(:disabled) { transform: translate(-1px, -1px); box-shadow: 3px 3px 0 var(--color-line); }
+.primary:active:not(:disabled) { transform: translate(1px, 1px); box-shadow: 0 0 0 var(--color-line); }
 
 /* 눈에 덜 띄는 보조 버튼 */
 .quiet {
-  font-size: var(--text-sm);
+  font-size: var(--text-xs);
   color: var(--color-ink-soft);
-  padding: var(--space-1) var(--space-3);
+  background: none;
+  border: 0;
+  padding: var(--space-1) var(--space-2);
 }
 .quiet:hover:not(:disabled) { color: var(--color-ink); }
+/* 입력 전에도 버튼 위치가 또렷하게 보이도록 */
+.primary:disabled {
+  opacity: 1;
+  color: var(--color-ink-soft);
+  background: var(--color-accent-soft);
+  box-shadow: none;
+}

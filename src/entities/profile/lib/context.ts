@@ -10,6 +10,8 @@ export function profileAsContext(): string {
     profile.contact.github && `GitHub: ${profile.contact.github}`,
     profile.contact.linkedin && `LinkedIn: ${profile.contact.linkedin}`,
     "",
+    ...profile.details,
+    "",
     ...topics.map((t) => `[${t.label}] ${t.answer.replaceAll("{visitor}", "그대")}`),
   ];
   return lines.filter(Boolean).join("\n");

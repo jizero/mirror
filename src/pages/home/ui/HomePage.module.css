@@ -1,50 +1,10 @@
-.stage { position: fixed; inset: 0; }
-.scene { position: absolute; inset: 0; }
+.stage { position: fixed; inset: 0; overflow: hidden; }
 
-.title {
-  position: absolute;
-  top: 22px;
-  left: 28px;
-  pointer-events: none;
-}
-
-.side {
+/* 화면 아래 가운데 입력창 */
+.dock {
   position: absolute;
   left: 50%;
-  bottom: max(var(--space-4), env(safe-area-inset-bottom));
+  bottom: max(var(--space-6), env(safe-area-inset-bottom));
   transform: translateX(-50%);
-  width: min(520px, calc(100% - 32px));
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-2);
-}
-
-.hint {
-  font-size: var(--text-xs);
-  color: var(--color-ink-soft);
-  pointer-events: none;
-}
-
-/* PC: 거울은 왼쪽에 크게, 대화는 오른쪽에 */
-.wide .side {
-  left: 64%;
-  right: auto;
-  top: 50%;
-  bottom: auto;
-  transform: translateY(-50%);
-  width: min(460px, 30vw);
-  align-items: flex-start;
-  gap: var(--space-4);
-}
-.wide .title {
-  top: 50%;
-  left: 64%;
-  transform: translateY(calc(-50% - 170px));
-}
-.wide .title h1 { font-size: var(--text-xl); }
-.wide .title small { font-size: var(--text-md); }
-
-@media (max-width: 520px) {
-  .title { top: 16px; left: 18px; }
+  width: min(560px, calc(100% - 32px));
 }

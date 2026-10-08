@@ -15,28 +15,29 @@ export const useAiQuota = create<{ used: number }>()(() => ({ used: 0 }));
  * 2) 없으면 Gemini (방문당 5회 제한)
  * 3) 실패/한도 초과 → 고정 안내 문구
  */
-export function askMirror(question: string, topicId?: string) {
+export function askMirror(question: string, opts: { topicId?: string; prefix?: string } = {}) {
   const visitor = useVisitor.getState().visitor;
   const speech = useSpeech.getState();
   if (!visitor || selectSpeaking(speech)) return;
 
+  const prefix = opts.prefix ? `${opts.prefix}\n\n` : "";
   speech.setAsked(question);
-  const topic = topicId ? topics.find((t) => t.id === topicId) : matchTopic(question);
-  if (topic) return speech.say(answerFor(topic, visitor.name));
-  void askAI(question, visitor.name);
+  const topic = opts.topicId ? topics.find((t) => t.id === opts.topicId) : matchTopic(question);
+  if (topic) return speech.say(prefix + answerFor(topic, visitor.name));
+  void askAI(question, visitor.name, prefix);
 }
 
-async function askAI(question: string, name: string) {
+async function askAI(question: string, name: string, prefix: string) {
   const speech = useSpeech.getState();
-  const unknown = lines.unknown(name, profile.contact.email);
+  const unknown = prefix + lines.unknown(name, profile.contact.email);
   const { used } = useAiQuota.getState();
   if (used >= AI_LIMIT_PER_VISIT) return speech.say(unknown);
 
   useAiQuota.setState({ used: used + 1 });
   speech.setStreaming(true);
-  speech.say("");
+  speech.say(prefix);
   try {
-    const text = await streamAnswer(question, name, speech.setTarget);
+    const text = await streamAnswer(question, name, (acc) => speech.setTarget(prefix + acc));
     if (!text.trim()) speech.say(unknown);
   } catch {
     speech.say(unknown);
