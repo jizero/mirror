@@ -14,8 +14,10 @@ type SpeechState = {
   streaming: boolean;
   /** 방문자가 마지막으로 물은 말 */
   asked: string | null;
+  /** 말이 끝나면 함께 떠오르는 그림 */
+  image: string | null;
 
-  say: (text: string) => void;
+  say: (text: string, image?: string) => void;
   /** 스트리밍 중 문장을 이어 붙일 때 (타자기는 이어서 진행) */
   setTarget: (text: string) => void;
   setStreaming: (v: boolean) => void;
@@ -29,8 +31,9 @@ export const useSpeech = create<SpeechState>()((set, get) => ({
   typedFrom: { time: 0, chars: 0 },
   streaming: false,
   asked: null,
+  image: null,
 
-  say: (text) => set({ target: text, shown: "", typedFrom: { time: performance.now() + typeDelayMs, chars: 0 } }),
+  say: (text, image) => set({ target: text, image: image ?? null, shown: "", typedFrom: { time: performance.now() + typeDelayMs, chars: 0 } }),
   setTarget: (target) => set({ target }),
   setStreaming: (streaming) => set({ streaming }),
   setAsked: (asked) => set({ asked }),

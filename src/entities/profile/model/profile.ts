@@ -18,6 +18,8 @@ export type Topic = {
   keywords: string[];
   /** 거울의 답변. {visitor} 는 방문자 이름으로 바뀝니다 */
   answer: string;
+  /** 답이 끝나면 함께 보여줄 그림 (public/ 기준 경로) */
+  image?: string;
 };
 
 export const profile = {
@@ -116,6 +118,28 @@ export const topics: Topic[] = [
     keywords: ["성격", "mbti", "엠비티", "infp", "혈액형", "o형", "성향", "어떤 성격", "취향", "취미", "관심", "요즘", "색", "컬러", "좋아하는 색"],
     answer:
       "INFP에 O형, 마음이 조금 급한 편이니라.\n하늘색과 분홍색을 좋아하여\n이 물빛도 그의 취향을 닮았지.",
+  },
+  {
+    id: "marriage",
+    label: "결혼",
+    question: "결혼했어?",
+    keywords: ["결혼", "유부", "기혼", "미혼", "배우자", "남편", "아내", "애인", "연애", "남친", "여친", "솔로"],
+    answer: "후후, 시크릿.",
+  },
+  {
+    id: "age",
+    label: "나이",
+    question: "몇 살이야?",
+    keywords: ["나이", "몇 살", "몇살", "연세", "년생", "생년", "나이가"],
+    answer: "아재 정도로만…",
+  },
+  {
+    id: "face",
+    label: "얼굴",
+    question: "어떻게 생겼어?",
+    keywords: ["얼굴", "생겼", "생김", "외모", "사진", "잘생", "예뻐", "예쁘", "모습"],
+    answer: "그의 얼굴이 물 위에 비치는구나…",
+    image: "/Jimsy.webp",
   },
   {
     id: "contact",

@@ -23,7 +23,7 @@ export function askMirror(question: string, opts: { topicId?: string; prefix?: s
   const prefix = opts.prefix ? `${opts.prefix}\n\n` : "";
   speech.setAsked(question);
   const topic = opts.topicId ? topics.find((t) => t.id === opts.topicId) : matchTopic(question);
-  if (topic) return speech.say(prefix + answerFor(topic, visitor.name));
+  if (topic) return speech.say(prefix + answerFor(topic, visitor.name), topic.image);
   void askAI(question, visitor.name, prefix);
 }
 

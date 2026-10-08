@@ -11,6 +11,7 @@ export function WaterSpeech() {
   const shown = useSpeech((st) => st.shown);
   const speaking = useSpeech(selectSpeaking);
   const tick = useSpeech((st) => st.tick);
+  const image = useSpeech((st) => st.image);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -21,7 +22,7 @@ export function WaterSpeech() {
 
   useEffect(() => {
     ref.current?.scrollTo({ top: ref.current.scrollHeight });
-  }, [shown]);
+  }, [shown, speaking]);
 
   return (
     <div ref={ref} className={s.speech} style={{ top: `${SPEECH_CENTER_Y * 100}%` }} aria-live="polite">
@@ -29,6 +30,7 @@ export function WaterSpeech() {
         {shown}
         {speaking && <span className={s.caret} />}
       </p>
+      {image && !speaking && <img className={s.image} src={image} alt="미래소년 코난의 포비" />}
     </div>
   );
 }

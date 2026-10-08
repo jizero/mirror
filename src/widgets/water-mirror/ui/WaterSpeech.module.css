@@ -6,6 +6,7 @@
   width: min(620px, calc(100% - 48px));
   max-height: 56vh;
   display: flex;
+  flex-direction: column;
   overflow-y: auto;
   pointer-events: none;
   text-align: center;
@@ -26,6 +27,15 @@
 }
 @keyframes float { 50% { transform: translateY(-4px); } }
 
+.image {
+  display: block;
+  max-width: min(240px, 60%);
+  max-height: 30vh;
+  margin: 16px auto 0;
+  border-radius: 12px;
+  animation: float 6s ease-in-out infinite;
+}
+
 .caret {
   display: inline-block;
   width: 2px;
@@ -38,5 +48,5 @@
 @keyframes blink { 50% { opacity: 0; } }
 
 @media (prefers-reduced-motion: reduce) {
-  .text, .caret { animation: none; }
+  .text, .caret, .image { animation: none; }
 }
