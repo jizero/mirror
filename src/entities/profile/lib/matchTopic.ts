@@ -18,7 +18,7 @@ export function matchTopic(question: string): Topic | null {
 }
 
 // 짐작에 쓰지 않을 주제 (사실을 지어내거나 엉뚱하게 들릴 수 있는 것)
-const NO_GUESS = new Set(["marriage", "age", "face", "saju", "oliveyoung", "coupang", "toss", "contact"]);
+const NO_GUESS = new Set(["marriage", "age", "face", "saju", "oliveyoung", "coupang", "toss", "hyundai", "contact"]);
 const bigrams = (s: string) => {
   const t = normalize(s).replace(/[^\p{L}\p{N}]/gu, "");
   return new Set(Array.from({ length: Math.max(t.length - 1, 0) }, (_, i) => t.slice(i, i + 2)));
