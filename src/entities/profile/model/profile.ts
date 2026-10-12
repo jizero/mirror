@@ -49,7 +49,7 @@ export const profile = {
     "[경력] 잇츠유어스 UI Developer·사원, 2010.02 ~ 2012.05: 쇼핑몰 '플레이어' PHP → .NET 리뉴얼, 웹 표준 UI 개편과 크로스브라우징",
     "[창업] 빕미 스튜디오 공동 창업 Client Developer, 2021.09 ~ 2022.03: 2인 팀으로 Flutter 앱 2종(음성 메신저 '빕미', 식단 기록 SNS '밥상머리') 기획부터 출시까지, OAuth·Provider·Google Ads, Figma UX·UX Writing·Amplitude·ASO",
     "[사이드] 햄휘혈 키우기: AI 코딩 도구로 만든 햄스터 육성 게임 https://hamzzi-17f4d.web.app/",
-    "[사이드] 이 마법 거울 사이트: Next.js·Three.js·Zustand·Vercel AI SDK·FSD 구조",
+    "[사이드] 이 마법 거울 사이트: Claude Code(AI 코딩 도구)와 함께 만듦. Next.js 16·React 19·TypeScript, Three.js로 물결 셰이더와 3D 가면(Meshy로 만든 모델)을 금테 거울 속에 띄움. 준비된 질문은 키워드로 바로 답하고, 나머지는 Vercel AI SDK로 Gemini Flash-Lite를 불러 답함. 상태는 Zustand, 구조는 Feature-Sliced Design(FSD), 배포는 Vercel. pnpm 사용.",
     "[개인] 떡볶이·돈까스·햄버거를 좋아하지만 매운 건 못 먹음. 좋아하는 색은 하늘색과 핑크색. O형, INFP, 성격이 급한 편. 아기를 좋아함.",
     "[협업] 리더십보다 팔로우십과 팀워크가 강점. 다양한 직군과의 협업과 커뮤니케이션을 중요하게 여기고, 이해관계자와 대화로 협의하는 것을 좋아함. 빠른 공유와 문서화로 의사결정과 히스토리를 관리하는 데 강함.",
     "[강점] 빠른 정보 공유, 문서화·히스토리 추적, 이해관계자 커뮤니케이션, 협업·의견 조율, 문제 상황 대응, 점진적 리팩터링, 테스트 기반 품질 개선, AI 활용 개발.",
@@ -90,6 +90,15 @@ export const topics: Topic[] = [
     keywords: ["기술", "스택", "언어", "프레임워크", "잘하", "잘해", "잘 해", "특기", "강점", "능력", "스킬", "도구", "skill", "react", "vue", "next", "typescript"],
     answer:
       "가장 강한 무기는 틀리면 안 되는 로그인·인증 흐름이니라.\n계정센터, SSO, 글로벌 본인인증을 직접 설계해 왔지.\nReact·Next.js와 Vue를 능숙히 다루고,\n모노레포와 디자인 시스템으로 팀의 기반을 다져\n배포 시간을 15분에서 4분 50초로 줄였느니라.",
+  },
+  // 동점이면 앞의 주제가 이기므로, "어떻게 만들었어?"가 이 사이트 답으로 가도록 프로젝트보다 앞에 둡니다
+  {
+    id: "site",
+    label: "이 사이트",
+    question: "이 사이트는 어떻게 만들었어?",
+    keywords: ["사이트", "홈페이지", "이 거울", "어떻게 만들었", "어떻게 만든", "만든 방법", "제작", "3d", "three", "gemini", "제미나이", "vercel", "버셀"],
+    answer:
+      "이 거울은 그가 AI와 함께 빚은 작품이니라.\nClaude Code와 머리를 맞대어 Next.js와 React로 틀을 세우고,\nThree.js로 물결과 3D 가면을 띄워 금테 거울 속에 담았지.\n준비된 물음은 바로 답하고,\n그 밖의 물음은 Vercel AI SDK로 Gemini를 불러 답하느니라.\n구조는 Feature-Sliced Design으로 나누고 Zustand로 상태를 다루며\nVercel 위에 띄웠구나.",
   },
   {
     id: "projects",

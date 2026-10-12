@@ -10,6 +10,15 @@
   color: var(--color-ink-faint);
 }
 
+/* AI 횟수 제한 안내 (세로가 낮은 화면에서도 보임) */
+.limit {
+  margin: var(--space-2) 0 0;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--color-accent);
+}
+
 @media (max-height: 500px) {
   .note { display: none; }
 }

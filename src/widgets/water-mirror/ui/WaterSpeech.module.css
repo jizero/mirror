@@ -1,16 +1,22 @@
-/* 물 위에 떠오르는 글 */
+/* 거울 유리 안쪽에 바로 떠오르는 글 (크기는 거울 기준: cqw/cqh). 타원 안에 들도록 가장자리를 비움 */
 .speech {
   position: absolute;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: min(620px, calc(100% - 48px));
-  max-height: 40vh;
+  width: 72cqw;
+  max-height: 74cqh;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
   pointer-events: none;
   text-align: center;
   scrollbar-width: none;
+  transition: opacity 0.8s ease 0.4s; /* 가면이 스러지기 시작한 뒤에 떠오름 */
+}
+.gone {
+  opacity: 0;
+  transition-delay: 0s;
 }
 .speech::-webkit-scrollbar { display: none; }
 
@@ -19,28 +25,32 @@
   white-space: pre-line;
   word-break: keep-all;
   font-family: var(--font-hand);
-  font-size: clamp(16px, 3.2vw + 6px, 34px);
-  line-height: 1.3;
-  color: var(--color-ink);
-  text-shadow: 0 0 12px var(--color-surface), 0 0 2px var(--color-surface);
+  font-size: clamp(13px, 4.1cqh, 23px); /* 거울(=화면) 크기에 맞춰 */
+  line-height: 1.6;
+  color: #f4f0ff;
+  text-shadow: 0 0 10px rgba(190, 170, 255, 0.85), 0 0 2px rgba(23, 15, 51, 0.9);
   animation: float 6s ease-in-out infinite;
 }
 @keyframes float { 50% { transform: translateY(-4px); } }
 
 .image {
   display: block;
-  max-width: min(240px, 60%);
-  max-height: 30vh;
-  margin: 16px auto 0;
+  max-width: 60%;
+  max-height: 20cqh;
+  margin: 2cqh auto 0;
   border-radius: 12px;
   animation: float 6s ease-in-out infinite;
 }
 
 .next {
   align-self: center;
-  margin-top: var(--space-3);
+  margin-top: 1.5cqh;
   pointer-events: auto;
 }
+/* 어두운 레이어 위의 글씨 버튼(다음, 선택 안 함)은 밝게 */
+.speech :global(button) { pointer-events: auto; }
+.speech .next,
+.speech :global(button[class*="quiet"]) { color: #fff2a8; }
 
 .caret {
   display: inline-block;
@@ -55,15 +65,4 @@
 
 @media (prefers-reduced-motion: reduce) {
   .text, .caret, .image { animation: none; }
-}
-
-/* 세로가 낮은 가로 화면: 글은 거울 오른쪽에, 3줄 이상 넉넉히 */
-@media (max-height: 500px) and (orientation: landscape) {
-  .speech {
-    left: 66%;
-    top: 42% !important;
-    width: min(48vw, 520px);
-    max-height: 62vh;
-  }
-  .text { font-size: clamp(16px, 5.4vh + 2px, 26px); }
 }

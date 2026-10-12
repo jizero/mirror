@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { mergeVertices } from "three/examples/jsm/utils/BufferGeometryUtils.js";
@@ -14,7 +14,14 @@ const MASK_URL = "/mesh_mask.glb";
 const MASK_HEIGHT = 2.6;
 
 /** 금테 타원 거울 속, 보랏빛 연기 사이에 떠 있는 흰 가면. 말할 때는 천천히 숨 쉽니다 */
-export default function MirrorMask({ speaking }: { speaking: boolean }) {
+type Props = {
+  speaking: boolean;
+  /** true 면 가면이 스러지고 거울에는 글만 남습니다 */
+  faceHidden?: boolean;
+  children?: ReactNode;
+};
+
+export default function MirrorMask({ speaking, faceHidden = false, children }: Props) {
   const mountRef = useRef<HTMLDivElement>(null);
   const speakingRef = useRef(speaking);
   speakingRef.current = speaking;
@@ -103,10 +110,11 @@ export default function MirrorMask({ speaking }: { speaking: boolean }) {
   }, []);
 
   return (
-    <div className={s.mirror} style={{ top: `${MASK_CENTER_Y * 100}%` }} aria-hidden>
-      <div className={s.smoke} />
-      <div ref={mountRef} className={s.mask} />
-      <div className={s.mist} />
+    <div className={s.mirror} style={{ top: `${MASK_CENTER_Y * 100}%` }}>
+      <div className={s.smoke} aria-hidden />
+      <div ref={mountRef} className={`${s.mask} ${faceHidden ? s.faded : ""}`} aria-hidden />
+      <div className={s.mist} aria-hidden />
+      {children}
     </div>
   );
 }

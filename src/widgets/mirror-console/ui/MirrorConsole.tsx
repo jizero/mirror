@@ -2,7 +2,7 @@
 
 import { lines, useSpeech } from "@/entities/mirror";
 import { useVisitor } from "@/entities/visitor";
-import { AskField, askMirror } from "@/features/ask-mirror";
+import { AskField, askMirror, useAiLimited } from "@/features/ask-mirror";
 import { useIntroduce } from "@/features/introduce-visitor";
 import s from "./MirrorConsole.module.css";
 
@@ -12,6 +12,7 @@ import s from "./MirrorConsole.module.css";
  */
 export function MirrorConsole() {
   const choosing = useIntroduce((st) => st.pending !== null);
+  const aiLimited = useAiLimited((st) => st.limited);
 
   const onAsk = (question: string) => {
     if (useVisitor.getState().visitor) return askMirror(question);
@@ -22,6 +23,7 @@ export function MirrorConsole() {
   return (
     <section className={s.console}>
       <AskField onAsk={onAsk} disabled={choosing} />
+      {aiLimited && <p className={s.limit}>금일 AI 호출 횟수가 소진되어, 있는 데이터를 통해 답변합니다.</p>}
       <p className={s.note}>
         Vercel AI SDK와 Gemini로 만든 생성형 AI 거울이에요.
         <br />

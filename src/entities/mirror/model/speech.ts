@@ -5,8 +5,8 @@ import { lines } from "../config/lines";
 const { typeMs, typeDelayMs } = tokens.motion;
 
 /** 한 장에 보여줄 최대 줄 수와 글자 수. 넘치면 "다음"을 눌러 넘깁니다 */
-const PAGE_LINES = 4;
-const PAGE_CHARS = 80;
+const PAGE_LINES = 6;
+const PAGE_CHARS = 120;
 
 /** from 에서 시작하는 장이 어디서 끝나는지. 스트리밍으로 글이 늘어나도 한 번 정한 끝은 바뀌지 않습니다 */
 export function pageEnd(text: string, from: number): number {

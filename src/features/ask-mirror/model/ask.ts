@@ -7,6 +7,9 @@ import { streamAnswer } from "../api/streamAnswer";
 /** 연달아 물을 때 다음 질문까지 기다리는 시간 */
 export const ASK_COOLDOWN_MS = 3000;
 
+/** 오늘 AI 호출 횟수가 소진됐는지(서버 429). 그러면 입력창 아래에 안내를 띄웁니다 */
+export const useAiLimited = create<{ limited: boolean }>()(() => ({ limited: false }));
+
 /** 이 시각 전까지는 묻기 버튼이 잠깁니다 */
 export const useAskCooldown = create<{ until: number }>()(() => ({ until: 0 }));
 
@@ -39,7 +42,8 @@ async function askAI(question: string, name: string, prefix: string) {
   try {
     const text = await streamAnswer(question, name, (acc) => speech.setTarget(prefix + acc));
     if (!text.trim()) speech.say(guess, topic.image);
-  } catch {
+  } catch (e) {
+    if ((e as Error).message === "429") useAiLimited.setState({ limited: true });
     speech.say(guess, topic.image);
   } finally {
     speech.setStreaming(false);

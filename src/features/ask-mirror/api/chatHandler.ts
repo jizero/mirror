@@ -10,15 +10,17 @@ const GLOBAL_DAILY_LIMIT = 400; // 서버 전체 하루
 const hits = new Map<string, { day: string; count: number; last: number }>();
 let global = { day: "", count: 0 };
 
-function allow(ip: string) {
+/** 통과면 null, 막히면 이유. daily = 오늘 횟수 소진(429), fast = 너무 잦은 호출(425) */
+function limitReason(ip: string): "daily" | "fast" | null {
   const day = new Date().toISOString().slice(0, 10);
   const now = Date.now();
   if (global.day !== day) global = { day, count: 0 };
-  if (global.count >= GLOBAL_DAILY_LIMIT) return false;
+  if (global.count >= GLOBAL_DAILY_LIMIT) return "daily";
 
   const rec = hits.get(ip);
   if (rec && rec.day === day) {
-    if (rec.count >= DAILY_LIMIT || now - rec.last < MIN_INTERVAL_MS) return false;
+    if (rec.count >= DAILY_LIMIT) return "daily";
+    if (now - rec.last < MIN_INTERVAL_MS) return "fast";
     rec.count += 1;
     rec.last = now;
   } else {
@@ -26,7 +28,7 @@ function allow(ip: string) {
     hits.set(ip, { day, count: 1, last: now });
   }
   global.count += 1;
-  return true;
+  return null;
 }
 
 // 질문에서 답할 언어를 찾습니다. 못 찾으면 질문을 쓴 언어로 답하게 둡니다
@@ -47,7 +49,8 @@ export async function POST(req: Request) {
   if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) return new Response("no-key", { status: 503 });
 
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "local";
-  if (!allow(ip)) return new Response("limit", { status: 429 });
+  const limited = limitReason(ip);
+  if (limited) return new Response(limited, { status: limited === "daily" ? 429 : 425 });
 
   const { question, visitor } = (await req.json()) as { question?: string; visitor?: string };
   const q = (question ?? "").slice(0, 300);
