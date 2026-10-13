@@ -2,6 +2,7 @@
 
 import { WaterMirror } from "@/widgets/water-mirror";
 import { MirrorConsole } from "@/widgets/mirror-console";
+import { AppPromo } from "@/widgets/app-promo";
 import { askMirror } from "@/features/ask-mirror";
 import { IntroduceChoices, useIntroduce } from "@/features/introduce-visitor";
 import s from "./HomePage.module.css";
@@ -16,6 +17,7 @@ export function HomePage() {
       <div className={s.dock}>
         <MirrorConsole />
       </div>
+      <AppPromo />
     </main>
   );
 }

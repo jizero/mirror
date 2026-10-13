@@ -1,0 +1,98 @@
+/* 오른쪽에 떠 있는 앱 홍보 배너 */
+.promo {
+  position: fixed;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  animation: bob 5s ease-in-out infinite;
+}
+@keyframes bob { 50% { transform: translateY(calc(-50% - 6px)); } }
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 168px;
+  padding: 18px 14px 14px;
+  text-align: center;
+  color: #1b3a6b;
+  text-decoration: none;
+  background: linear-gradient(180deg, #ffffff, #eaf4ff);
+  border: 2px solid #3d8bf2;
+  border-radius: var(--radius-lg);
+  box-shadow: 4px 4px 0 #1f5fc4;
+  transition: transform 0.2s ease;
+}
+a.card:hover { transform: translateY(-3px); }
+a.card:focus-visible { outline: 3px solid #9cc8ff; outline-offset: 3px; }
+
+.icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+}
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.name {
+  font-family: var(--font-hand);
+  font-size: 20px;
+}
+.desc {
+  font-size: 12px;
+  line-height: 1.4;
+  color: #42628f;
+  word-break: keep-all;
+}
+.cta {
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #1f6fe0;
+}
+
+.close {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 26px;
+  height: 26px;
+  font-size: 16px;
+  line-height: 1;
+  color: #1b3a6b;
+  background: #ffffff;
+  border: 2px solid #3d8bf2;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* 좁은 화면이나 세로가 낮은 화면: 오른쪽 위에 작은 알약 모양으로 */
+@media (max-width: 900px), (max-height: 500px) {
+  .promo {
+    top: 16px;
+    right: 18px;
+    transform: none;
+    animation: none;
+  }
+  .card {
+    flex-direction: row;
+    width: auto;
+    gap: 8px;
+    padding: 6px 14px 6px 6px;
+    border-radius: var(--radius-pill);
+    text-align: left;
+  }
+  .icon { width: 32px; height: 32px; border-radius: 50%; }
+  .name { font-size: 15px; }
+  .desc { display: none; }
+  .cta { margin-top: 0; font-size: 11px; }
+  .close { top: -8px; right: -8px; width: 22px; height: 22px; font-size: 13px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .promo { animation: none; }
+}
